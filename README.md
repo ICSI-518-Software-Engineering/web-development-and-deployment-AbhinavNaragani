@@ -1,5 +1,13 @@
 Abhinav Naragani , UAlbany ID: 001616670, NetID: AN812513
 
+**About myself:**
+My name is Abhinav Naragani. I have a bachelor of engineering degree in Computer Science from Chaitanya Bharathi Institute of Technology.  I am currently pursuing masters in Computer Science at State University of New York at Albany. Speaking of interests, I am more of a sports person, especially cricket. I have participated in various statewide inter college cricket tournaments and one nationwide cricket tournament for Chaitanya Bharathi Institute of Technology. I am the admin of News/Media handle, TrendGab which had an monthly reach of 300,000+ accounts. Impressed by my work, i got an offer from a startup company, "Zobaze" to work as a content writer and i have worked for them for more than 18 months between 2019-2021.
+
+**Web address of the deployed website: ** http://ec2-54-91-29-246.compute-1.amazonaws.com:5001 
+Public IP Address of the EC2 Instance:  54.91.29.246 
+Private IP Address of the EC2 Instance:   172.31.37.181
+
+
 **Software Engineering Assignment 2 – Experience Report**
 
 **Overall experience rating – 4 (Excellent experience)**
