@@ -6,6 +6,7 @@ My name is Abhinav Naragani. I have a bachelor of engineering degree in Computer
 **Web address of the deployed website: ** http://ec2-54-91-29-246.compute-1.amazonaws.com:5001 
 Public IP Address of the EC2 Instance:  54.91.29.246 
 Private IP Address of the EC2 Instance:   172.31.37.181
+Git repo link :   https://github.com/ICSI-518-Software-Engineering/web-development-and-deployment-AbhinavNaragani.git
 
 
 **Software Engineering Assignment 2 – Experience Report**
