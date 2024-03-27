@@ -1,12 +1,9 @@
-const express = require('express');
+const express=require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const app=express();
 const path = require("path");
 const cors = require('cors');
-
-const app = express();
-const port = 5001;
-
+const mongoose = require('mongoose');
 app.use(express.static(path.join(__dirname,"public")));
 
 app.use((req,res,next)=>
@@ -15,97 +12,87 @@ app.use((req,res,next)=>
     res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
     res.setHeader('Access-Control-Allow-Headers','Content-Type,Authorization');
     next();
+})
+
+app.use(cors());
+app.use(bodyParser.json({ limit:"40mb"}));
+
+
+app.post('/addnumbers',(req,res,next)=>
+{
+    res.json({result:(req.body.inp1+req.body.inp2)});
+
+})
+
+
+mongoose.connect('mongodb+srv://abhinavn221:niEjK9Q1dXqca0o9@cluster0.moffxf2.mongodb.net/Cluster0').then(() => {
+  console.log('MongoDB connected');
+}).catch((error) => {
+  console.error('MongoDB connection error:', error);
 });
-app.use(bodyParser.json());
 
-// Body parser middleware
-app.use(bodyParser.json({ limit:"10mb" }));
-
-// MongoDB connection
-mongoose.connect('mongodb+srv://abhinavn221:niEjK9Q1dXqca0o9@cluster0.moffxf2.mongodb.net/Cluster0')
-    .then(() => {
-        console.log('MongoDB connected');
-    })
-    .catch((error) => {
-        console.error('MongoDB connection error:', error);
-    });
-
-// Inventory Schema
 const inventorySchema = new mongoose.Schema({
-    name: String,
-    quantity: Number,
-    imageURL: String
+  name: String,
+  quantity: Number,
+  imageURL: String
 });
 
-// Inventory Model
 const InventoryItem = mongoose.model('InventoryItem', inventorySchema);
 
-// POST endpoint to add an inventory item
+
 app.get('/api/inventory', async (req, res) => {
     try {
-        res.status(201).json(await InventoryItem.find({}));
+      const inventory = await InventoryItem.find();
+      res.json(inventory);
     } catch (error) {
-        console.error('Error adding item to inventory:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error('Error fetching inventory:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-});
-
-app.post('/api/inventory', async (req, res) => {
+  });
+  
+  app.post('/api/inventory', async (req, res) => {
     try {
-        const newItem = new InventoryItem(req.body);
-        await newItem.save();
-        res.status(201).json(newItem);
+      const newItem = new InventoryItem({
+        name: req.body.name,
+        quantity: req.body.quantity,
+        imageURL: req.body.image
+      });
+      await newItem.save();
+      res.status(201).json(newItem);
     } catch (error) {
-        console.error('Error adding item to inventory:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error('Error adding item to inventory:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-});
-
-app.put('/api/inventory/:id', async (req, res) => {
+  });
+  
+  app.put('/api/inventory/:id', async (req, res) => {
     try {
-        const newItem = await InventoryItem.findByIdAndUpdate(req.params.id, req.body);
-        res.status(201).json(newItem);
+      const updatedItem = await InventoryItem.findByIdAndUpdate(req.params.id, {
+        name: req.body.name,
+        quantity: req.body.quantity
+      }, { new: true });
+      res.json(updatedItem);
     } catch (error) {
-        console.error('Error adding item to inventory:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error('Error updating item in inventory:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-});
-
-app.delete('/api/inventory/:id', async (req, res) => {
+  });
+  
+  app.delete('/api/inventory/:id', async (req, res) => {
     try {
-        res.status(201).json(await InventoryItem.findByIdAndDelete(req.params.id));
+      await InventoryItem.findByIdAndDelete(req.params.id);
+      res.json({ message: 'Item deleted successfully' });
     } catch (error) {
-        console.error('Error adding item to inventory:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error('Error deleting item from inventory:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
-});
+  });
 
 
-console.log("resylt");
-
-// POST endpoint for addition operation
-app.post('/addition', (req, res) => {
-
-    
-    const { num1, num2 } = req.body;
- 
-    const result = parseFloat(num1) + parseFloat(num2);
-    console.log(result);
-    res.json({ result })
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
-
-
-
-
-
-
-
-
-
+app.listen(5001,()=>
+{
+    console.log("server is running on port 4000");
+})
 
 
 
